@@ -1,0 +1,33 @@
+CREATE TABLE [dbo].[Users] (
+    [Id]          INT           IDENTITY (1, 1) NOT NULL,
+    [Username]    NVARCHAR (50) NULL,
+    [Password]    NVARCHAR (50) NULL,
+    [Email]       NVARCHAR (50) NULL,
+    [PhoneNum]    NVARCHAR (25) NULL,
+    [DateOfBirth] NVARCHAR (50) NULL,
+    [Gender]      NVARCHAR (50) NULL,
+    [Address]     NVARCHAR (50) NULL,
+    [Illness]     NVARCHAR (50) NULL
+);
+
+CREATE procedure [dbo].[CreateNewPersonRecord]
+(
+
+@Username nvarchar(50),
+@Password nvarchar(50),
+@Email nvarchar(50),
+@PhoneNum nvarchar(25),
+@DateOfBirth nvarchar(50),
+@Gender nvarchar(50),
+@Address nvarchar(50),
+@Illness nvarchar(50)
+
+)
+
+as
+
+begin
+
+Insert into Users values(@Username, @Password, @Email, @PhoneNum, @DateOfBirth, @Gender, @Address, @Illness)
+
+End
