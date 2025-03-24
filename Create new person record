@@ -1,0 +1,21 @@
+CREATE procedure [dbo].[CreateNewPersonRecord]
+(
+
+@Username nvarchar(50),
+@Password nvarchar(50),
+@Email nvarchar(50),
+@PhoneNum nvarchar(25),
+@DateOfBirth nvarchar(50),
+@Gender nvarchar(50),
+@Address nvarchar(50),
+@Illness nvarchar(50)
+
+)
+
+as
+
+begin
+
+Insert into Users values(@Username, @Password, @Email, @PhoneNum, @DateOfBirth, @Gender, @Address, @Illness)
+
+End
