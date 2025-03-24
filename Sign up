@@ -1,0 +1,105 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Drawing.Text;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace HealthWeatherAppPrototype
+{
+    public partial class frmSignUp : Form
+    {
+        public frmSignUp(Form program)
+        {
+            InitializeComponent();
+            oldForm = program;
+        }
+
+        private Form oldForm;
+
+        //declare sign up and log in form
+        private frmLogIn frmToLogIn = new frmLogIn();
+
+        private void btnCheckPassword_Click(object sender, EventArgs e)
+        {
+            string Password1 = txtPassword.Text;
+            string Password2 = txtReEnterPassword.Text;
+
+            if (Password1 == Password2)
+            {
+                grbPasswordsMatch.Show();
+                txtErrorMessage.Hide();
+            }
+            else
+            {
+                txtErrorMessage.Show();
+                grbPasswordsMatch.Hide();
+            }
+        }
+
+        private void btnCreateAccount_Click(object sender, EventArgs e)
+        {
+            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\M2301342\\OneDrive - Middlesbrough College\\Documents\\T level DPDD\\Year2\\Programming\\C#\\HealthWeatherAppPrototype\\WeatherAppDatabase.mdf\";Integrated Security=True;Connect Timeout=30";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            string username = txtUsername.Text;
+
+            //Use stored procedure
+
+            SqlCommand checkUsernameCommand = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Username = @Username", sqlConnection);
+            checkUsernameCommand.Parameters.AddWithValue("@Username", username);
+
+            sqlConnection.Open();
+            int usernameCount = (int)checkUsernameCommand.ExecuteScalar();
+            sqlConnection.Close();
+
+            if (usernameCount > 0)
+            {
+                txtUsernameNotValid.Show();
+            }
+
+            else
+            {
+                SqlCommand command = new SqlCommand("CreateNewPersonRecord", sqlConnection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                string password = txtPassword.Text;
+                string email = txtEmail.Text;
+                string phoneNum = txtPhoneNumber.Text;
+                string DOB = dtpDateOfBirth.Text;
+                string gender = cmbGender.Text;
+                string address = txtAddress.Text;
+                string illness = cmbIllnesses.Text;
+
+                // Call stored procedure passing parameters
+                command.Parameters.AddWithValue("@Username", username);
+                command.Parameters.AddWithValue("@Password", password);
+                command.Parameters.AddWithValue("@Email", email);
+                command.Parameters.AddWithValue("@PhoneNum", phoneNum);
+                command.Parameters.AddWithValue("@DateOfBirth", DOB);
+                command.Parameters.AddWithValue("@Gender", gender);
+                command.Parameters.AddWithValue("@Address", address);
+                command.Parameters.AddWithValue("@Illness", illness);
+
+                sqlConnection.Open();
+                command.ExecuteNonQuery();
+                sqlConnection.Close();
+
+                oldForm.ShowDialog();
+                this.Close();
+
+            }
+        }
+
+        private void btnToLogIn_Click(object sender, EventArgs e)
+        {
+            frmToLogIn.Show();
+            this.Close();
+        }
+    }
+}
