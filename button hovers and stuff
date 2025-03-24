@@ -1,0 +1,61 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace HealthWeatherAppPrototype
+{
+    public partial class frmHomePage : Form
+    {
+        public frmHomePage()
+        {
+            InitializeComponent();
+            frmToSignUp = new frmSignUp(this);
+        }
+
+        //When mouse hovers over sign up, change colour
+        private void btnSignUp_MouseEnter(object sender, EventArgs e)
+        {
+            btnSignUp.BackColor = Color.LightSeaGreen;
+        }
+
+        //When mouse hovers over log in, change colour
+        private void btnLogIn_MouseEnter(object sender, EventArgs e)
+        {
+            btnLogIn.BackColor = Color.Teal;
+        }
+
+        //Revert sign up colour back
+        private void btnSignUp_MouseLeave(object sender, EventArgs e)
+        {
+            btnSignUp.BackColor = Color.LightSeaGreen;
+        }
+
+        //Revert log in colour back
+        private void btnLogIn_MouseLeave(object sender, EventArgs e)
+        {
+            btnLogIn.BackColor = Color.Teal;
+        }
+
+        //declare sign up and log in form
+        private frmSignUp frmToSignUp;
+        private frmLogIn frmToLogIn;
+
+        private void btnSignUp_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            frmToSignUp.Show();
+        }
+
+        private void btnLogIn_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            frmToLogIn.Show();
+        }
+    }
+}
